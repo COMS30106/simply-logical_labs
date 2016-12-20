@@ -1,0 +1,133 @@
+<HEAD>
+<TITLE>Simply Logical - Labs 3b</TITLE>
+<HEAD>
+
+<BODY>
+
+<H1>More Simply Logical lab exercises chapter 3</H1>
+
+The Prolog file to be used for these lab exercises is <A HREF=labs3b.pl><B>labs3b.pl</B></A>.
+<P>
+
+
+<HR>
+
+<OL>
+
+<LI>
+
+<UL>
+<LI>Describe and explain the two differences in behaviour between the
+predicates <B>powerset</B> and <B>powerset1</B>. <P>
+<LI>Make <B>powerset</B> tail-recursive by adding an accumulator as extra
+argument. <P>
+</UL>
+
+<P>
+
+<HR>
+
+<LI>
+The well-known 8-puzzle consists of 8 tiles and an empty space, organised in a square. 
+A move consists in sliding a tile to the empty space. 
+The objective is to reach the following position: 
+<PRE>
+   1 2 3
+   8   4
+   7 6 5
+</PRE>
+
+Such a position will be represented by a list
+<PRE>       [XE/YE,X1/Y1,X2/Y2,X3/Y3,X4/Y4,X5/Y5,X6/Y6,X7/Y7,X8/Y8]
+</PRE>
+with the first pair denoting the coordinates of the empty space,
+<TT>X1/Y1</TT> denoting the coordinates of tile 1, and so on. 
+Coordinates <TT>1/1</TT> refer to the lower left square. 
+The position above is thus represented by the list 
+<PRE>       [2/2,1/3,2/3,3/3,3/2,3/1,2/1,1/1,1/2]
+</PRE>
+
+<UL>
+<LI>The 'Manhattan distance' is the sum of the horizontal and vertical distance between 
+two squares. Write a predicate <B>mandist(X1/Y1,X2/Y2,D)</B> for calculating 
+this distance. <P>
+<LI>Write a predicate <B>move_p(P1,P2)</B> indicating whether position <B>P2</B> 
+can be reached from position <B>P1</B> in a single move. 
+Use the predicate <B>mandist</B>. <P>
+</UL>
+<P>
+
+<HR>
+
+<LI>
+The predicate <B>prove_e(Goal,Explanation)</B> returns an explanation with the answer 
+to a query: 
+<PRE>
+| ?- prove_e(student_of(S,T),Explanation).
+
+S = paul,
+T = peter,
+Explanation = student_of(paul,peter)because(follows(paul,computer_science)because given)and(teaches(peter,computer_science)because given) ? ;
+
+S = paul,
+T = adrian,
+Explanation = student_of(paul,adrian)because(follows(paul,expert_systems)because given)and(teaches(adrian,expert_systems)because given) ? ;
+
+S = maria,
+T = peter,
+Explanation = student_of(maria,peter)because(follows(maria,ai_techniques)because given)and(teaches(peter,ai_techniques)because given) ? ;
+
+no
+</PRE>
+Notice that <B>because</B> and <B>and</B> are declared as infix functors. 
+Also notice that any predicate on which we use <B>clause(Head,Body)</B> should be 
+declared as dynamic. <P>
+
+<UL>
+<LI>Explanations can become long-winded when for instance the <B>append</B>-predicate is 
+involved. Modify <B>prove_e</B> such that only the top-level call to such predicates is 
+included in the explanation: 
+<PRE>
+| ?- prove_e(sublist1(SL,[a,b]),Explanation).
+
+SL = [],
+Explanation = sublist1([],[a,b])because append([],[a,b],[a,b])and append([],[a,b],[a,b]) ? ;
+
+SL = [a],
+Explanation = sublist1([a],[a,b])because append([],[a,b],[a,b])and append([a],[b],[a,b]) ? ;
+
+SL = [a,b],
+Explanation = sublist1([a,b],[a,b])because append([],[a,b],[a,b])and append([a,b],[],[a,b]) ? ;
+
+SL = [],
+Explanation = sublist1([],[a,b])because append([a],[b],[a,b])and append([],[b],[b]) ? ;
+
+SL = [b],
+Explanation = sublist1([b],[a,b])because append([a],[b],[a,b])and append([b],[],[b]) ? ;
+
+SL = [],
+Explanation = sublist1([],[a,b])because append([a,b],[],[a,b])and append([],[],[]) ? ;
+
+no
+</PRE>
+Make use of the built-in predicate <B>call(Goal)</B> to prove goals without explaining them. <P>
+<LI>Modify <B>prove_e</B> such that it can handle negation: 
+<PRE>
+| ?- prove_e(bachelor(X),Explanation).
+X = peter,
+Explanation = bachelor(peter)because(man(peter)because given)and(not married(peter)) ?
+</PRE>
+
+</UL>
+
+
+
+</OL>
+
+<HR>
+
+<A HREF="/~flach/SimplyLogical.html"><IMG SRC=SLicon.GIF>Back</A>
+ / <A HREF="/~flach/">Peter Flach</A>
+
+
+</BODY>

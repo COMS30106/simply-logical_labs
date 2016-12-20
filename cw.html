@@ -1,0 +1,79 @@
+<HEAD>
+<TITLE>Simply Logical - assignment</TITLE>
+<HEAD>
+
+<BODY>
+
+<H1>Simply Logical bigger assignment</H1>
+
+The assignment deals with natural language and search. 
+Most of the relevant material can be found in Chapters 5-7 of the book. 
+The file to be used is <A HREF=cw.pl><B>cw.pl</B></A>. <P>
+
+
+<HR>
+
+
+The goal of this assignment is to implement a basic travel planner for train journeys 
+that can answer questions in natural language (ambiguity intended :-). 
+Use the timetable in <A HREF=cw.pl><B>cw.pl</B></A>.
+<P>
+
+The program will contain 3 parts: 
+<UL>
+<LI>a grammar - used for both interpretation of questions and generation of answers; 
+<LI>a search engine - notice the search space contains many loops; 
+<LI>a shell - use <B>handle_input</B> on p.143 as a starting point.
+</UL>
+<P>
+
+<OL>
+
+<LI>
+In a first step, make sure the program can answer the following questions: 
+<PRE>
+? [what,time,do,i,have,to,leave,bristol,in,order,to,be,in,brussels,at,16:30]. 
+! [if,you,leave,bristol,at,10:15,you,will,arrive,in,brussels,at,16:10].
+? [if,i,leave,bristol,at,12:00,what,time,will,i,arrive,in,brussels].
+! [if,you,leave,bristol,at,12:15,you,will,arrive,in,brussels,at,18:10].
+</PRE>
+Variations on these questions also need to be understood, e.g. "When" instead of 
+"What time", "should I" instead of "do I have to", "if I want" instead of "in order", 
+etc. Also make sure that your system graciously handles questions it doesn't understand.
+<P>
+
+You can earn max. 35% for the grammar part for this question and 35% for the search part. 
+<P>
+
+<LI>
+The second step is to handle questions that can only be understood in the context 
+of a particular journey: 
+<PRE>
+? [what,time,do,i,have,to,leave,bristol,in,order,to,be,in,brussels,at,16:30].
+! [if,you,leave,bristol,at,10:15,you,will,arrive,in,brussels,at,16:10].
+? [is,there,an,earlier,possibility].
+! [if,you,leave,bristol,at,9:15,you,will,arrive,in,brussels,at,15:10].
+? [do,i,have,to,change].
+! [yes,you,have,to,change,in,london,for,the,11:27,to,brussels].
+? [what,time,do,i,arrive,in,london].
+! [you,arrive,in,london,at,11:00].
+</PRE>
+Again, the parser should be robust and understand variations on these questions. 
+Your shell will now need to carry a journey around as a context against which 
+some of the questions will be understood. Note that the context may change as a 
+result of a question. 
+<P>
+
+You can earn max. 30% for handling context. 
+<P>
+
+</OL>
+
+
+<HR>
+
+<A HREF="/~flach/SimplyLogical.html"><IMG SRC=SLicon.GIF>Back</A>
+ / <A HREF="/~flach/">Peter Flach</A>
+
+</BODY>
+</HTML>

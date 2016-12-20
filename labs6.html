@@ -1,0 +1,97 @@
+<HEAD>
+<TITLE>Simply Logical - Labs 6</TITLE>
+<HEAD>
+
+<BODY>
+
+<H1>Simply Logical lab exercises chapter 6</H1>
+
+The assignment deals with heuristic search and the 8-puzzle. 
+
+
+<HR>
+
+The well-known 8-puzzle consists of 8 tiles and an empty space, organised in a square. 
+A move consists in sliding a tile to the empty space, or equivalently, 
+moving the empty space horizontally or vertically. 
+Each move has equal cost. 
+The objective is to reach the following position: 
+<PRE>
+   1 2 3
+   8   4
+   7 6 5
+</PRE>
+
+The file <A HREF=labs6.pl><B>labs6.pl</B></A> contains a program for 
+solving the 8-puzzle from an arbitrary starting position. 
+The query <B>puzzle(C,N)</B> will return the cost of 
+the found solution (the number of moves) and the number of nodes searched. 
+During the search it prints the <I>f</I>-value of the current node taken from the 
+front of the agenda. 
+By typing <B>;</B> after a solution has been found, you can backtrack over 
+different starting positions specified by <B>start_p</B>. 
+
+<OL>
+
+<HR>
+
+<LI>
+<UL>
+<LI>Analyse the search space in terms of number of different board positions and 
+branching factor. Estimate the number of nodes at depth 20. What does this tell 
+you about the occurrence of duplicates in the search space? <P>
+
+<LI>
+The given algorithm is an A algorithm, i.e. it combines an estimate <I>h</I> of 
+the distance to a goal with the cost <I>g</I> of the current partial solution. 
+What happens if <I>g</I> is not taken into account? Demonstrate this on one of the 
+given starting positions. <P>
+</UL>
+
+<HR>
+
+<LI>
+Adapt the predicate <B>merge</B> such that it only adds a node to the agenda 
+if it does not already contain the same node with a lower <I>f</I>-value. 
+<UL>
+<LI>Does this affect the ability of the program to find optimal solutions?
+<LI>Demonstrate the increased efficiency of the search. 
+</UL><P>
+
+<HR>
+
+<LI>
+The predicate <B>eval_p</B> evaluates a board position in terms of its 
+overall Manhattan distance to the goal by using <B>totdist</B>. 
+This heuristic is not always very effective. 
+Improve it by adding the result of the predicate <B>insequence</B>, 
+which punishes tiles that are not followed in clockwise direction by 
+their successor. 
+
+<UL>
+<LI>Demonstrate the increased efficiency of the search on a starting position 
+of your choice. 
+<LI>Demonstrate that the new heuristic is not optimistic by showing that it 
+does not always return an optimal solution. 
+<LI>What does it mean when the printed evaluation of the current node is 
+lower than the previous one? 
+</UL><P>
+
+<HR>
+
+<LI>
+Make the search algorithm non-exhaustive by limiting the agenda to a fixed size. 
+Demonstrate and discuss the effect this has on the ability of the program to find 
+(optimal) solutions. <P>
+
+
+</OL>
+
+<HR>
+
+<A HREF="/~flach/SimplyLogical.html"><IMG SRC=SLicon.GIF>Back</A>
+ / <A HREF="/~flach/">Peter Flach</A>
+
+
+</BODY>
+</HTML>

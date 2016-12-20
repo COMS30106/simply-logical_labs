@@ -1,0 +1,151 @@
+<HEAD>
+<TITLE>Simply Logical - Labs 1</TITLE>
+<HEAD>
+
+<BODY>
+
+<H1>Simply Logical lab exercises chapter 1</H1>
+
+Log on to a Unix server and start up SICStus Prolog with the command <B>sicstus</B>.
+
+SICStus starts up as follows:
+<PRE>
+   SICStus 3.8.4 (sparc-solaris-5.7): Mon Jun 12 18:41:59 MET DST 2000
+   Licensed to acrc.bristol.ac.uk
+   | ?-
+</PRE>
+
+<B>?-</B> is the Prolog prompt at which you can type a query, ended by a period. 
+Prolog programs should be stored in a file and then read into the Prolog interpreter, 
+by means of the query <B>?-consult(file).</B> (which can be abbreviated <B>?-[file].</B>). 
+The default extension of a SICStus Prolog file is <B>.pl</B>, so the query <B>?-consult(file).</B> 
+will either load <B>file</B> or <B>file.pl</B>. If your filename contains non-alphanumeric 
+characters you should use single quotes (e.g. <B>?-consult('file.txt').</B>). 
+
+The Prolog file to be used for this chapter's lab exercises is <A HREF=labs1.pl><B>labs1.pl</B></A>. 
+Copy it to your own directory, then load it into Prolog: 
+<PRE>
+   | ?- [labs1].
+   {consulting /home/public/www/HTML/Teaching/Resources/COMS30106/labs/labs1.pl...}
+   {Warning: [L] - singleton variables in nearby/2 in lines 15-18}
+   {Warning: [L] - singleton variables in reachable/3 in lines 19-22}
+   {Warning: [L] - singleton variables in reachable/3 in lines 22-23}
+   {/home/public/www/HTML/Teaching/Resources/COMS30106/labs/labs1.pl consulted, 10 msec 2448 bytes}
+</PRE>
+Don't worry about the warnings, they concern don't-care variables that occur only once 
+in a clause (sometimes they indicate mis-spelled variable names, however). <P>
+
+<HR>
+
+<OL>
+
+<LI>
+The predicate <B>reachable</B> returns a list of intermediate stations in its third argument 
+(see p.14 of the book). Extend it with a fourth argument returning the list of lines 
+taken on this route, e.g. 
+<PRE>
+   | ?- reachable(bond_street,piccadilly_circus,Stations,Lines).
+   
+   Stations = [oxford_circus],
+   Lines = [central,bakerloo] ? ;
+   
+   Stations = [green_park],
+   Lines = [jubilee,piccadilly] ? ;
+   
+   Stations = [green_park,oxford_circus],
+   Lines = [jubilee,victoria,bakerloo] ? ;
+   
+   no
+</PRE>
+Note that a Prolog program is correct only if all the answers it returns are correct, not only 
+the first one! As shown above you can ask for the next answer by pressing <B>;</B> followed 
+by return. <P>
+
+NB. Don't worry about the duplicate lines that sometimes show up in the list of lines -- 
+we will see later how to deal with them. <P>
+
+
+<HR>
+
+<LI>
+Translate the following questions into Prolog:
+<UL>
+<LI>'Find a station that is reachable from Picadilly Circus taking 2
+lines.'
+<LI>'Find a station that is reachable from Bond Street, starting on the
+Central line,
+with at least 2 other stations in between.'
+<LI>'Find all stations with 4 stations in between on 5 lines.'
+</UL>
+and record the answers. <P>
+
+
+<HR>
+
+<LI>
+The predicate <B>nearby</B> should be symmetric but isn't -- 
+i.e., we have <B>nearby(bond_street,tottenham_court_road)</B> but not 
+<B>nearby(tottenham_court_road,bond_street)</B>. 
+The same holds for the predicate <B>connected</B>. 
+Fix this, without duplicating the information in the current definition of <B>connected</B>. <P>
+
+This introduces another problem with <B>nearby</B> -- which one? <P>
+
+
+<HR>
+
+<LI>
+Write a predicate <B>stations</B> that lists the stations on a particular line:
+<PRE>
+   | ?- stations(Line,Stations).
+   
+   Line = victoria,
+   Stations = [green_park,oxford_circus] ? ;
+   
+   Line = central,
+   Stations = [bond_street,oxford_circus,tottenham_court_road] ? ;
+   
+   Line = jubilee,
+   Stations = [bond_street,green_park,charing_cross] ? ;
+   
+   Line = piccadilly,
+   Stations = [green_park,piccadilly_circus,leicester_square] ? ;
+   
+   Line = bakerloo,
+   Stations = [oxford_circus,piccadilly_circus,charing_cross] ? ;
+   
+   Line = northern,
+   Stations = [tottenham_court_road,leicester_square,charing_cross] ? ;
+   
+   no
+</PRE>
+NB. You'll have to treat the Victoria line separately, as it has only 2 stations. <P>
+
+Can you do something similar for finding all lines a particular station is on? Why not? <P>
+
+
+<HR>
+
+<LI>
+Change the representation of stations and lines as follows: 
+<PRE>
+   line(central,[bond_street,oxford_circus,tottenham_court_road]).
+   line(jubilee,[bond_street,green_park,charing_cross]).
+   line(piccadilly,[green_park,piccadilly_circus,leicester_square]).
+   line(victoria,[green_park,oxford_circus]).
+   line(bakerloo,[oxford_circus,piccadilly_circus,charing_cross]).
+   line(northern,[tottenham_court_road,leicester_square,charing_cross]).
+</PRE>
+and rewrite the definition of <B>connected</B> using this representation. <P>
+
+
+</OL>
+
+
+<HR>
+
+<A HREF="/~flach/SimplyLogical.html"><IMG SRC=SLicon.GIF>Back</A>
+ / <A HREF="/~flach/">Peter Flach</A>
+
+
+</BODY>

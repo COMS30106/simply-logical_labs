@@ -1,0 +1,224 @@
+<HEAD>
+<TITLE>Simply Logical - Labs 2</TITLE>
+<HEAD>
+
+<BODY>
+
+<H1>Simply Logical lab exercises chapter 2</H1>
+
+The exercises are about models for propositional, relational and full clausal logic. <P>
+
+The file <A HREF=herbrand.pl><B>herbrand.pl</B></A> 
+implements the semantical notions discussed in this chapter, 
+such as Herbrand base, interpretation and model. For instance, you can use it to generate 
+all Herbrand interpretations of a given list of clauses, and to check whether 
+a given clause is a logical consequence of a given list of clauses. 
+Have a look at the file and you will see that, although you may not yet understand 
+all Prolog constructs used there, the Prolog definitions follow the definitions given 
+in the lectures fairly closely. <P>
+
+To use these programs, you have to specify which predicates, constants and functors 
+there are in your language. Example propositional/relational/full clausal languages 
+are given in the files 
+<A HREF=prop.pl><B>prop.pl</B></A>, 
+<A HREF=rel.pl><B>rel.pl</B></A>, and
+<A HREF=full.pl><B>full.pl</B></A>.
+Loading one of these files will automatically load 
+<A HREF=herbrand.pl><B>herbrand.pl</B></A>. 
+You will also need the files
+<A HREF=../programs/library.pl><B>library.pl</B></A> and
+<A HREF=../programs/aux_sicstus.pl><B>aux_sicstus.pl</B></A>. 
+<P>
+
+
+<HR>
+
+<OL>
+
+
+<LI>
+Consult <A HREF=prop.pl><B>prop.pl</B></A>.
+This defines a propositional clausal language. 
+Check which one by means of the query <B>?-herbrand_base(B).</B> <P>
+
+The following query can be used to generate the Herbrand models of the 
+program in Exercise 2.2 (p.20): 
+<PRE>
+?- herbrand_model([(bachelor;married:-man,adult),(man:-true),(false:-bachelor)], M).
+</PRE> 
+Note: 
+<OL>
+<LI>we need brackets around the clauses because of overloading of ':-', ';' and ','
+<LI>the empty body is represented by <TT>true</TT> and the empty head by <TT>false</TT>
+</OL> <P>
+
+To check that <TT>married:-adult</TT> is a logical consequence of this program you can use the query
+<PRE>
+?- logical_consequence((married:-adult),
+                       [(bachelor;married:-man,adult),(man:-true),(false:-bachelor)],
+                       Answer).
+Answer = yes
+</PRE>
+In case the clause given as the first argument is <B>not</B> a logical consequence 
+of the program given as second argument, this program returns a <B>countermodel</B> 
+(a model of the program that is <B>not</B> a model of the clause): 
+<PRE>
+?- logical_consequence((bachelor:-man),
+                       [(bachelor;married:-man,adult),(man:-true),(false:-bachelor)],
+                       Answer).
+Answer = countermodel([man]) 
+</PRE>
+Notice that, because of the 'hidden' cut in the <TT>( if -> then ; else )</TT>
+construct (Section 3.4 of the book), this program stops with
+the first countermodel it finds, and cannot be used to generate all countermodels. <P>
+
+<UL>
+<LI>
+Add a propositional atom <TT>woman</TT> to the language, 
+and check that the Herbrand base is now enlarged. 
+Express in clausal logic "somebody is a woman if and only if she is not a man" (2 clauses) 
+and demonstrate that in each model of these two clauses exactly one of <TT>man/woman</TT> is true
+by listing all answers to the query <B>?-herbrand_model([...],M)</B>. <P>
+
+<LI>
+Find a list of clauses that has exactly the following models: 
+<PRE>
+?- herbrand_model([...],M).
+M = [woman] ? ;
+M = [man] ? ;
+M = [adult,woman] ? ;
+M = [adult,married,woman] ? ;
+M = [adult,man,married] ? ;
+M = [adult,bachelor,man] ? ;
+no
+</PRE>
+
+Hint: this requires 7 clauses, all of which are true (more or less) in the actual world. <P>
+</UL>
+
+<HR>
+
+
+<LI>
+Consult <A HREF=rel.pl><B>rel.pl</B></A>.
+This defines a relational clausal language. 
+Check which one by means of the query <B>?-herbrand_base(B).</B> <P>
+
+According to the answer to Exercise 2.6 (p.215) the clause 
+<TT>likes(peter,S):-student_of(S,peter)</TT> has 144 models 
+(check the calculation, and verify by means of a query!). 
+We are going to reduce the number of models by adding information. <P>
+
+<UL>
+<LI>
+Express in clausal logic (1 clause each): 
+<OL>
+<LI>Everybody likes him/herself. 
+<LI>Nobody is a student of him/herself. 
+<LI>Peter is a student of nobody.
+</OL> <P>
+
+<LI>
+Now, determine all models of these 4 clauses (incl. the one above). <BR>
+NB. When checking this by means of the program <B>herbrand_model</B>, 
+you should make sure that no variables occur in more than one clause. <P>
+
+<LI>
+Finally, determine whether "nobody is a student of Maria" is a logical consequence 
+of these clauses. <P>
+</UL>
+
+<HR>
+
+
+<LI>
+Since any subset of the Herbrand base is a Herbrand interpretation, the <B>intersection</B> 
+of two Herbrand interpretations is also a Herbrand interpretation, assigning <B>true</B> 
+to an atom just in case the original interpretations <B>both</B> assign true to it. 
+We say that a program has the <B>model intersection property</B> if the intersection 
+of any two of its models is also a model. For instance, the following program has 
+the model intersection property (check!): 
+<PRE>
+   adult:-married. 
+   man. 
+</PRE>
+but the following does not (check!): 
+<PRE>
+   married;bachelor:-man,adult.
+   adult:-married. 
+   man. 
+</PRE> <P>
+
+Find out which of the following programs has the model intersection property: 
+<OL>
+<LI><PRE>   man:-bachelor.
+   adult:-bachelor.
+   bachelor.</PRE>
+<LI><PRE>   man:-bachelor.
+   adult:-bachelor.
+   married;bachelor.</PRE>
+<LI><PRE>   man:-bachelor.
+   adult:-bachelor.
+   :-married.</PRE>
+<LI><PRE>   man:-bachelor.
+   adult:-bachelor.</PRE>
+</OL>
+
+<HR>
+
+
+<LI>
+Consult <A HREF=full.pl><B>full.pl</B></A>.
+This defines a full clausal language. 
+Check which one by means of the query <B>?-herbrand_base(B).</B> <P>
+
+Actually you should have known better, since the Herbrand base of a 
+full clausal langauge is infinite! 
+Check this by asking for a few solutions to the query <B>?-ground_term(T).</B> 
+and <B>?-ground_atom(A).</B>
+As a consequence, none of the predicates <B>herbrand_interpretation</B>, 
+<B>herbrand_model</B> and <B>logical_consequence</B> will terminate, since 
+they all generate interpretations from the Herbrand base. <P>
+
+If we modify the program a little bit, we can however continue to check 
+whether a clause is true in an interpretation. 
+Consider the following definition of <B>false_clause</B>:
+<PRE>
+false_clause((false:-Body),I):-
+        ground_clause((false:-Body)),
+        true_body(Body,I).
+false_clause((Head:-Body),I):-
+        ground_clause((Head:-Body)),
+        true_body(Body,I),
+        not true_head(Head,I).
+</PRE>
+The problem is that <B>ground_clause</B> may generate an infinite number of 
+substitutions before hitting on a falsifying one. 
+However, any variables in the body of the clause will also be ground by 
+the call <B>true_body(Body,I)</B>. 
+So if we make sure that we don't test clauses with head variables that do not 
+occur in the body, we may remove the calls to <B>ground_clause</B>. <P>
+
+<UL>
+<LI>
+Make this modification, and then check which of the following clauses is true 
+in the interpretation <TT>{plus(0,0,0), plus(0,s(0),s(0), plus(s(0),0,s(0)}</TT>: 
+<OL>
+<LI><TT>plus(s(X),Y,s(Z)):-plus(X,Y,Z).</TT>
+<LI><TT>plus(X,Y,Z):-plus(s(X),Y,s(Z)).</TT>
+<LI><TT>:-plus(X,X,s(X)).</TT>
+</OL>
+For each clause that is false in the given interpretation, give a ground instance 
+that is false. <P>
+</UL>
+
+
+
+</OL>
+
+<HR>
+
+<A HREF="/~flach/SimplyLogical.html"><IMG SRC=SLicon.GIF>Back</A>
+ / <A HREF="/~flach/">Peter Flach</A>
+
+</BODY>

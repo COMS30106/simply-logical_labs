@@ -1,0 +1,85 @@
+<HEAD>
+<TITLE>Sicstus tracer</TITLE>
+<HEAD>
+
+<BODY>
+
+<H1>Sicstus tracer</H1>
+
+You can trace Prolog's computations by giving the command <B>?-trace.</B> 
+This will put Prolog in trace mode, showing every single resolution step 
+(except for the predicates that have been compiled rather than consulted). 
+Trace mode is switched off by the command <B>?-notrace.</B> 
+<P>
+
+We will follow the computation trace of the query <B>?-student_of(S,peter).</B>, 
+depicted in Figure 3.1 on page 45 of the book. 
+Load the file <A HREF=student_of.pl><B>student_of.pl</B></A>.
+<PRE>
+| ?- trace.
+{The debugger will first creep -- showing everything (trace)}
+
+yes
+{trace}
+| ?- student_of(S,peter).
+        1      1 Call: student_of(_158,peter) ?
+        2      2 Call: follows(_158,_648) ?
+?       2      2 Exit: follows(paul,computer_science) ?
+        3      2 Call: teaches(peter,computer_science) ?
+        3      2 Exit: teaches(peter,computer_science) ?
+?       1      1 Exit: student_of(paul,peter) ?
+
+S = paul ? ;
+</PRE>
+After each line of output we can give a command; <B>h</B> lists the possible options. 
+For the moment we are just stepping through the computation by hitting <B>RETURN</B>.
+The relation with SLD-trees is as follows. A <B>Call</B> means passing through a 
+node in the SLD-tree in downward direction; only the first literal of the resolvent 
+is shown. <B>Exit</B> means passing upward through a node. The first number to the 
+left indicates the depth of the node in the SLD-tree; the second number indicates 
+the level at which that literal first occurred in the resolvent. For instance, 
+<B>teaches(peter,computer_science)</B> is called at level 3, but is introduced 
+(with the second argument uninstantiated) at level 2. <P>
+
+We have found our first solution, and force backtracking by typing a semi-colon as usual. 
+Notice that Sicstus indicates nodes with possible alternative solutions with a 
+question mark in the left margin. We thus backtrack to the most recent choice point 
+at 2 2. 
+<PRE>
+        1      1 Redo: student_of(paul,peter) ?
+        2      2 Redo: follows(paul,computer_science) ?
+?       2      2 Exit: follows(paul,expert_systems) ?
+        3      2 Call: teaches(peter,expert_systems) ?
+        3      2 Fail: teaches(peter,expert_systems) ?
+        2      2 Redo: follows(paul,expert_systems) ?
+        2      2 Exit: follows(maria,ai_techniques) ?
+        3      2 Call: teaches(peter,ai_techniques) ?
+?       3      2 Exit: teaches(peter,ai_techniques) ?
+?       1      1 Exit: student_of(maria,peter) ?
+
+S = maria ? ;
+</PRE>
+<B>Redo</B> indicates the search for an alternative solution; notice that 
+the literal following <B>Redo</B> is the most recently found answer rather than the 
+query to which we seek an alternative solution (see the <B>Call</B> at the same level). 
+The second solution for <B>follows(S,C)</B> at 2 2 leads to a failure branch, because 
+we can't solve <B>teaches(peter,expert_systems)</B> at 3 2. We thus redo 2 2 (the question 
+mark showing that not all choices have been exhausted), after which we find our second 
+solution. <P>
+
+Note that there is still a question mark at 3 2, indicating possible alternative 
+solutions -- this is because <B>teaches(peter,ai_techniques)</B> is not the last 
+<B>teaches</B> fact in the program. Forced backtracking however shows that all 
+solutions have been exhausted. 
+<PRE>
+        1      1 Redo: student_of(maria,peter) ?
+        3      2 Redo: teaches(peter,ai_techniques) ?
+        3      2 Fail: teaches(peter,ai_techniques) ?
+        1      1 Fail: student_of(_158,peter) ?
+
+no
+</PRE>
+
+<P>
+
+</BODY>

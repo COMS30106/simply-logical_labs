@@ -1,0 +1,95 @@
+<HEAD>
+<TITLE>Simply Logical - Labs 3</TITLE>
+<HEAD>
+
+<BODY>
+
+<H1>Simply Logical lab exercises chapter 3</H1>
+
+The Prolog file to be used for this chapter's lab exercises is <A HREF=labs3.pl><B>labs3.pl</B></A>.
+<P>
+
+You can trace Prolog's computations by giving the command <B>?-trace.</B> 
+This will put Prolog in trace mode, showing every single resolution step 
+(except for the predicates that have been compiled rather than consulted). 
+Trace mode is switched off by the command <B>?-notrace.</B> 
+An example of a trace is given <A HREF=tracer.html>here</A>.
+
+
+<HR>
+
+<OL>
+
+
+<LI>
+<A HREF=labs3.pl><B>labs3.pl</B></A> defines three predicates <B>sublist1(SL,L)</B>, 
+<B>sublist2(SL,L)</B>, and <B>sublist3(SL,L)</B>, each of which generates sublists of 
+a given list L. 
+(NB. You will also need the files
+<A HREF=../programs/library.pl><B>library.pl</B></A> and
+<A HREF=../programs/aux_sicstus.pl><B>aux_sicstus.pl</B></A>.)
+
+First, make sure that you understand
+the order of the solutions to the query <B>?-sublist1(SL,[a,b])</B>. <BR>
+(NB. if you are using the tracer, type <B>s</B> for skip instead of <B>RETURN</B> whenever you
+encounter an <B>append</B> goal, to avoid expanding the calls to <B>append</B>.) <BR>
+Also, check the reason for the non-terminating behaviour of <B>sublist2</B> after all answers
+to the previous query have been found.
+<P>
+
+These three predicates have the disadvantage that the empty list is generated
+<I>n</I>+1 times, where <I>n</I> is the length of the second argument.
+Change each of the definitions to avoid this. <BR>
+(Hint: treat the empty sublist as special case, making sure that the given
+clauses don't succeed for the emtpy list.)
+<P>
+
+
+
+<HR>
+
+<LI>
+Write a predicate <B>subsequence(SS,L)</B> such that <B>SS</B> is a list of
+elements occurring in that order, but not necessarily successively, in list <B>L</B>. <BR>
+For example:
+<PRE>        ?-subsequence([c,d,e],[a,b,c,d,e,f]).
+        yes
+        ?-subsequence([c,e],[a,b,c,d,e,f]).
+        yes
+        ?-subsequence([f,a],[a,b,c,d,e,f]).
+        no
+</PRE>
+
+<P>
+
+<HR>
+
+
+
+<LI>
+Two lists are disjoint if they don't have an element in common. 
+Define the Prolog predicate <B>disjoint(L1,L2)</B> using <B>not</B> and 
+<B>element</B> (defined in <A HREF=../programs/library.pl>library.pl</A>). 
+<P>
+
+
+<HR>
+
+<LI>
+Write a predicate <B>element1(X,L)</B> that succeeds if X occurs exactly once in list L.
+<P>
+Does your definition generate all solutions of the query
+<B>?-element1(X,[a,b,b,c]).</B>? If not, why not?
+<P>
+
+
+
+
+</OL>
+
+<HR>
+
+<A HREF="/~flach/SimplyLogical.html"><IMG SRC=SLicon.GIF>Back</A>
+ / <A HREF="/~flach/">Peter Flach</A>
+
+</BODY>
